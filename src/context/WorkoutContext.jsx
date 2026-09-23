@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
+import toast from 'react-hot-toast'; // Import toast
 
 const WorkoutContext = createContext();
 
@@ -8,39 +9,61 @@ export const WorkoutProvider = ({ children }) => {
   const [planList, setPlanList] = useState([]);
   const [savedList, setSavedList] = useState([]);
 
-  // Add to plan
+  // Add to plan with Toast logic
   const addToPlan = (workout) => {
-    setPlanList((prev) => {
-      const exists = prev.find((item) => item.id === workout.id);
-      if (exists) return prev;
-      if (prev.length >= 5) {
-        alert("You can only add up to 5 workouts for today!");
-        return prev;
-      }
-      return [...prev, workout];
-    });
+    const exists = planList.some((item) => item.id === workout.id);
+
+    if (exists) {
+      toast('Already in your plan!', {
+        icon: '⚠️',
+        style: {
+          background: '#18181b',
+          color: '#fbbf24',
+          border: '1px solid #3f3f46',
+        },
+      });
+      return;
+    }
+
+    if (planList.length >= 5) {
+      toast.error("You can only add up to 5 workouts for today!");
+      return;
+    }
+
+    setPlanList((prev) => [...prev, workout]);
+    toast.success("Added to today's plan");
   };
 
   // Remove from plan
   const removeFromPlan = (id) => {
     setPlanList((prev) => prev.filter((item) => item.id !== id));
+    toast.error("Removed from today's plan");
   };
 
-  // Toggle Save Workout
+  // Save for later with Toast logic
   const toggleSaveWorkout = (workout) => {
-    setSavedList((prev) => {
-      const exists = prev.find((item) => item.id === workout.id);
-      if (exists) {
-        return prev.filter((item) => item.id !== workout.id);
-      } else {
-        return [...prev, workout];
-      }
-    });
+    const exists = savedList.some((item) => item.id === workout.id);
+
+    if (exists) {
+      toast('Already saved for later!', {
+        icon: '⚠️',
+        style: {
+          background: '#18181b',
+          color: '#fbbf24',
+          border: '1px solid #3f3f46',
+        },
+      });
+      return;
+    }
+
+    setSavedList((prev) => [...prev, workout]);
+    toast.success("Saved for later");
   };
 
   // Remove from Saved
   const removeFromSaved = (id) => {
     setSavedList((prev) => prev.filter((item) => item.id !== id));
+    toast.error("Removed from saved list");
   };
 
   return (

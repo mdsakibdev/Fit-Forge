@@ -2,6 +2,8 @@ import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
 import { WorkoutProvider } from "../context/WorkoutContext";
+import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +34,21 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className={`${montserrat.className} bg-black text-white min-h-screen antialiased`}>
-       
+       {/* Toaster Component */}
+        <Toaster 
+          position="bottom-right" 
+          toastOptions={{
+            style: {
+              background: '#121418',
+              color: '#fff',
+              border: '1px solid #27272a',
+            },
+          }}/>
+
         <WorkoutProvider>
          <Navbar/>
           {children}
+          <ToastContainer />
         </WorkoutProvider>
         
         </body>
