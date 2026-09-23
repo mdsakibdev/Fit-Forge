@@ -11,19 +11,34 @@ export default function MyPlanPage() {
   const [activeTab, setActiveTab] = useState('plan'); // 'plan' or 'saved'
   const [sortBy, setSortBy] = useState('Duration');
 
-  // Active list dynamic switch
+  // Active list dynamic switch based on tab selection
   const currentList = activeTab === 'plan' ? planList : savedList;
 
-  // Dynamic calculations for Stats
-  const totalExercises = planList.length;
-  const totalMinutes = planList.reduce((acc, curr) => acc + (curr.duration || 0), 0);
-  const totalCalories = planList.reduce((acc, curr) => acc + (curr.caloriesBurned || 0), 0);
+  // Dynamic calculations for Stats based on current active tab list
+  const totalExercises = currentList.length;
+  const totalMinutes = currentList.reduce((acc, curr) => acc + (Number(curr.duration) || 0), 0);
+  const totalCalories = currentList.reduce((acc, curr) => acc + (Number(curr.caloriesBurned) || 0), 0);
 
-  // Sorting Logic
+  // Robust Sorting Logic
   const sortedList = [...currentList].sort((a, b) => {
-    if (sortBy === 'Duration') return (b.duration || 0) - (a.duration || 0);
-    if (sortBy === 'Calories') return (b.caloriesBurned || 0) - (a.caloriesBurned || 0);
-    if (sortBy === 'Rating') return (b.rating || 0) - (a.rating || 0);
+    const valA_duration = Number(a.duration) || 0;
+    const valB_duration = Number(b.duration) || 0;
+
+    const valA_calories = Number(a.caloriesBurned) || 0;
+    const valB_calories = Number(b.caloriesBurned) || 0;
+
+    const valA_rating = Number(a.rating) || 0;
+    const valB_rating = Number(b.rating) || 0;
+
+    if (sortBy === 'Duration') {
+      return valB_duration - valA_duration; // High to Low
+    }
+    if (sortBy === 'Calories') {
+      return valB_calories - valA_calories; // High to Low
+    }
+    if (sortBy === 'Rating') {
+      return valB_rating - valA_rating; // High to Low
+    }
     return 0;
   });
 
@@ -43,21 +58,21 @@ export default function MyPlanPage() {
       <div className="bg-[#0f1216] border border-zinc-800/80 rounded-2xl p-6 sm:p-8 grid grid-cols-3 gap-4">
         <div>
           <p className="text-zinc-400 text-xs sm:text-sm font-medium mb-1">Exercises</p>
-          <span className="text-3xl sm:text-5xl font-black text-[#ccff00]">
+          <span className="text-3xl sm:text-5xl font-medium text-[#ccff00]">
             {totalExercises}
           </span>
         </div>
 
         <div>
           <p className="text-zinc-400 text-xs sm:text-sm font-medium mb-1">Minutes</p>
-          <span className="text-3xl sm:text-5xl font-black text-white">
+          <span className="text-3xl sm:text-5xl font-medium text-white">
             {totalMinutes}
           </span>
         </div>
 
         <div>
           <p className="text-zinc-400 text-xs sm:text-sm font-medium mb-1">Calories</p>
-          <span className="text-3xl sm:text-5xl font-black text-white">
+          <span className="text-3xl sm:text-5xl font-medium text-white">
             {totalCalories}
           </span>
         </div>
@@ -177,7 +192,11 @@ export default function MyPlanPage() {
 
                 <button 
                   onClick={() => {
-                    if (activeTab === 'plan') removeFromPlan(fit.id);
+                    if (activeTab === 'plan') {
+                      removeFromPlan(fit.id);
+                    } else {
+                      removeFromSaved(fit.id);
+                    }
                   }}
                   className="bg-[#ccff00] hover:bg-[#b8e600] text-black font-extrabold text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all"
                 >
