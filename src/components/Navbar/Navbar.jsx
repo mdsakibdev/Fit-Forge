@@ -99,10 +99,10 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/my-plan"
+            href="/myplan"
             onClick={() => setIsOpen(false)}
             className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              isActive('/my-plan')
+              isActive('/myplan')
                 ? 'bg-[#1a2e05] text-[#ccff00]'
                 : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'
             }`}
