@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
+import { WorkoutProvider } from "@/context/WorkoutContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +32,11 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className={`${montserrat.className} bg-black text-white min-h-screen antialiased`}>
-        <Navbar/>
-        {children}
+       
+        <WorkoutProvider>
+         <Navbar/>
+          {children}
+        </WorkoutProvider>
         
         </body>
     </html>
