@@ -60,10 +60,10 @@ export const WorkoutProvider = ({ children }) => {
     toast.success("Saved for later");
   };
 
-  // Remove from Saved
+// Remove from Saved list with exact toast message
   const removeFromSaved = (id) => {
     setSavedList((prev) => prev.filter((item) => item.id !== id));
-    toast.error("Removed from saved list");
+    toast.error("Removed from saved"); // <--- এখানে আপডেট করা হলো
   };
 
   return (
