@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import logo from '@/assets/logo.png'
+import logo from '../../assets/logo.png'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FaDumbbell as DumbbellIcon, FaBars as BarsIcon, FaXmark as XIcon } from 'react-icons/fa6';

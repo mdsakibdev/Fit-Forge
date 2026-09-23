@@ -1,6 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
+import Navbar from "../components/navbar/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,6 +10,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'], // আপনার যেসব ওয়েট প্রয়োজন
+  variable: '--font-montserrat', // কাস্টম CSS ভ্যারিয়েবল (ঐচ্ছিক)
+  display: 'swap',
 });
 
 export const metadata = {
@@ -23,7 +30,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-black text-white">
+      <body className={`${montserrat.className} bg-black text-white min-h-screen antialiased`}>
         <Navbar/>
         {children}
         

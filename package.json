@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/node": "26.6.2",
+    "@types/react": "19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
     "daisyui": "^5.7.44",
     "eslint": "^9",

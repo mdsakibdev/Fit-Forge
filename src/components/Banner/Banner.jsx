@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { FaArrowDown } from 'react-icons/fa6';
-import bannerImage from '@/assets/banner.png'
+import bannerImage from '../../assets/banner.png'
 
-export default function HeroBanner() {
+const HeroBanner = () => {
   const scrollToLibrary = () => {
     const librarySection = document.getElementById('library');
     if (librarySection) {
@@ -65,3 +65,5 @@ export default function HeroBanner() {
     </section>
   );
 }
+
+export default HeroBanner;
