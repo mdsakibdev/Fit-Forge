@@ -8,25 +8,25 @@ export const WorkoutProvider = ({ children }) => {
   const [planList, setPlanList] = useState([]);
   const [savedList, setSavedList] = useState([]);
 
-  // Today's plan-e workout add korar function (Cap of 5 lifts constraint-সহ)
+  // Add to plan
   const addToPlan = (workout) => {
     setPlanList((prev) => {
       const exists = prev.find((item) => item.id === workout.id);
-      if (exists) return prev; // Already added
+      if (exists) return prev;
       if (prev.length >= 5) {
-        alert('You can only add up to 5 workouts to today\'s plan!');
+        alert("You can only add up to 5 workouts for today!");
         return prev;
       }
       return [...prev, workout];
     });
   };
 
-  // Today's plan theke remove korar function
+  // Remove from plan
   const removeFromPlan = (id) => {
     setPlanList((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // Saved list-e add/remove toggle korar function
+  // Toggle Save Workout
   const toggleSaveWorkout = (workout) => {
     setSavedList((prev) => {
       const exists = prev.find((item) => item.id === workout.id);
@@ -38,6 +38,11 @@ export const WorkoutProvider = ({ children }) => {
     });
   };
 
+  // Remove from Saved
+  const removeFromSaved = (id) => {
+    setSavedList((prev) => prev.filter((item) => item.id !== id));
+  };
+
   return (
     <WorkoutContext.Provider
       value={{
@@ -46,6 +51,7 @@ export const WorkoutProvider = ({ children }) => {
         addToPlan,
         removeFromPlan,
         toggleSaveWorkout,
+        removeFromSaved,
       }}
     >
       {children}

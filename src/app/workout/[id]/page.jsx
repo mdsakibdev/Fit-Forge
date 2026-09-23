@@ -1,32 +1,40 @@
-import React from 'react';
+'use client';
+
+import React, { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getFitData } from '../../../lib/apps';
-import { FaPlus, FaBookmark, FaArrowLeft } from 'react-icons/fa6';
+import { useWorkout } from '../../../context/WorkoutContext';
+import { FaPlus, FaBookmark, FaArrowLeft, FaCheck } from 'react-icons/fa6';
 
-export default async function WorkoutDetailsPage({ params }) {
-  const { id } = await params;
-  const fitData = await getFitData();
-  const fit = fitData.find((item) => String(item.id) === String(id));
+export default function WorkoutDetailsPage({ params }) {
+  const { id } = use(params);
+  const { planList, savedList, addToPlan, toggleSaveWorkout } = useWorkout();
+
+  const [fit, setFit] = React.useState(null);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await getFitData();
+      const selected = data.find((item) => String(item.id) === String(id));
+      setFit(selected);
+    }
+    fetchData();
+  }, [id]);
 
   if (!fit) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">Workout Not Found!</h1>
-        <Link href="/" className="text-[#ccff00] underline text-sm">
-          Back to Library
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-zinc-400">
+        Loading details...
       </div>
     );
   }
 
-  const imageUrl = fit?.image && fit.image.trim() !== '' 
-    ? fit.image 
-    : 'https://via.placeholder.com/600x600?text=No+Image';
+  const isAddedToPlan = planList.some((item) => item.id === fit.id);
+  const isSaved = savedList.some((item) => item.id === fit.id);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
-      {/* Back Button */}
       <div className="mb-6">
         <Link 
           href="/" 
@@ -37,15 +45,12 @@ export default async function WorkoutDetailsPage({ params }) {
         </Link>
       </div>
 
-      {/* Main Grid Container */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-        
-        {/* Left Side: Image Container (Full Height Match) */}
         <div className="lg:col-span-5 w-full flex">
-          <div className="relative w-full h-87.5 sm:h-112.5 lg:h-full min-h-100 rounded-2xl overflow-hidden bg-[#121418] border border-zinc-800/80">
+          <div className="relative w-full h-[350px] sm:h-[450px] lg:h-full min-h-[400px] rounded-2xl overflow-hidden bg-[#121418] border border-zinc-800/80">
             <Image
-              src={imageUrl}
-              alt={fit.name || 'Workout Image'}
+              src={fit.image}
+              alt={fit.name}
               fill
               priority
               className="object-cover"
@@ -53,12 +58,9 @@ export default async function WorkoutDetailsPage({ params }) {
           </div>
         </div>
 
-        {/* Right Side: Details & Actions */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
-          
-          {/* Header Title & Description */}
           <div className="space-y-3">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white uppercase tracking-tight font-sans">
+            <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight font-sans">
               {fit.name}
             </h1>
             <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
@@ -66,7 +68,6 @@ export default async function WorkoutDetailsPage({ params }) {
             </p>
           </div>
 
-          {/* Muscle Groups Badges */}
           <div className="flex flex-wrap gap-2">
             {fit.muscleGroups?.map((muscle, idx) => (
               <span
@@ -78,74 +79,51 @@ export default async function WorkoutDetailsPage({ params }) {
             ))}
           </div>
 
-          {/* Data Specs Table Box */}
-          <div className="bg-[#121418] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 space-y-2.5 text-xs sm:text-sm">
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Equipment</span>
+          <div className="bg-[#121418] border border-zinc-800/80 rounded-2xl p-5 space-y-2 text-xs sm:text-sm">
+            <div className="flex justify-between py-1 border-b border-zinc-800/60">
+              <span className="text-zinc-500 font-bold uppercase">Equipment</span>
               <span className="text-zinc-200 font-semibold">{fit.equipment}</span>
             </div>
-
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Difficulty</span>
+            <div className="flex justify-between py-1 border-b border-zinc-800/60">
+              <span className="text-zinc-500 font-bold uppercase">Difficulty</span>
               <span className="text-zinc-200 font-semibold">{fit.difficulty}</span>
             </div>
-
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Sets</span>
-              <span className="text-zinc-200 font-semibold">{fit.sets}</span>
-            </div>
-
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Reps</span>
-              <span className="text-zinc-200 font-semibold">{fit.reps}</span>
-            </div>
-
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Duration</span>
+            <div className="flex justify-between py-1 border-b border-zinc-800/60">
+              <span className="text-zinc-500 font-bold uppercase">Duration</span>
               <span className="text-zinc-200 font-semibold">{fit.duration} min</span>
             </div>
-
-            <div className="flex justify-between items-center py-1 border-b border-zinc-800/60">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Calories</span>
+            <div className="flex justify-between py-1 border-b border-zinc-800/60">
+              <span className="text-zinc-500 font-bold uppercase">Calories</span>
               <span className="text-zinc-200 font-semibold">{fit.caloriesBurned} kcal</span>
             </div>
-
-            <div className="flex justify-between items-center py-1">
-              <span className="text-zinc-500 font-bold uppercase tracking-wider">Rating</span>
-              <span className="text-zinc-200 font-semibold">{fit.rating}</span>
-            </div>
           </div>
 
-          {/* Instructions Section */}
-          <div className="space-y-2">
-            <h3 className="text-white font-extrabold text-sm sm:text-base uppercase tracking-wider">
-              Instructions
-            </h3>
-            <ol className="space-y-2 text-zinc-400 text-xs sm:text-sm leading-relaxed">
-              {fit.instructions?.map((step, idx) => (
-                <li key={idx} className="flex gap-2">
-                  <span className="text-zinc-500 font-semibold">{idx + 1}.</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <button className="bg-[#ccff00] hover:bg-[#b8e600] text-black font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-xl flex items-center gap-2 transition-all duration-200">
-              <FaPlus className="text-xs" />
-              <span>Add to todayes plan</span>
+            <button 
+              onClick={() => addToPlan(fit)}
+              className={`font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-xl flex items-center gap-2 transition-all duration-200 ${
+                isAddedToPlan 
+                  ? 'bg-zinc-800 text-zinc-300 border border-zinc-700' 
+                  : 'bg-[#ccff00] hover:bg-[#b8e600] text-black'
+              }`}
+            >
+              {isAddedToPlan ? <FaCheck className="text-xs" /> : <FaPlus className="text-xs" />}
+              <span>{isAddedToPlan ? "Added to today's plan" : "Add to today's plan"}</span>
             </button>
 
-            <button className="border border-zinc-800 hover:border-zinc-600 bg-transparent text-zinc-300 hover:text-white font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl flex items-center gap-2 transition-all duration-200">
+            <button 
+              onClick={() => toggleSaveWorkout(fit)}
+              className={`border font-semibold text-xs sm:text-sm px-6 py-3.5 rounded-xl flex items-center gap-2 transition-all duration-200 ${
+                isSaved 
+                  ? 'bg-zinc-800 text-[#ccff00] border-[#ccff00]' 
+                  : 'border-zinc-800 hover:border-zinc-600 bg-transparent text-zinc-300 hover:text-white'
+              }`}
+            >
               <FaBookmark className="text-xs" />
-              <span>Save for later</span>
+              <span>{isSaved ? 'Saved' : 'Save for later'}</span>
             </button>
           </div>
-
         </div>
-
       </div>
     </div>
   );

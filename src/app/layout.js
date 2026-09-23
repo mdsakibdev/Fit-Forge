@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
-import { WorkoutProvider } from "@/context/WorkoutContext";
+import { WorkoutProvider } from "../context/WorkoutContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
