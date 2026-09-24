@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 
 const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'], // আপনার যেসব ওয়েট প্রয়োজন
-  variable: '--font-montserrat', // কাস্টম CSS ভ্যারিয়েবল (ঐচ্ছিক)
+  weight: ['300', '400', '500', '600', '700', '800', '900'], 
+  variable: '--font-montserrat', 
   display: 'swap',
 });
 

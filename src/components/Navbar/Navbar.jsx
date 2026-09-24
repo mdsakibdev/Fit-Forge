@@ -9,14 +9,14 @@ export default function Navbar() {
   const pathname = usePathname();
   const { planList, savedList } = useWorkout();
 
-  // Active Link নির্ধারণ করার জন্য
+  // Active Link
   const isActive = (path) => pathname === path;
 
   return (
     <header className="bg-black text-white border-b border-zinc-800/60 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
         
-        {/* ১. বাম দিকে Logo */}
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <FaDumbbell className="text-[#ccff00] text-2xl transform -rotate-45 transition-transform group-hover:scale-110" />
           <span className="font-extrabold tracking-wider text-xl uppercase font-sans">
@@ -24,7 +24,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* ২. মাঝখানে Nav Links */}
+        {/*Nav Links */}
         <nav className="flex items-center bg-[#111111] p-1.5 rounded-full border border-zinc-800/80">
           <Link
             href="/"
@@ -49,7 +49,7 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* ৩. ডান দিকে Status Badges (ক্লিক করলে /my-plan পেজে নিয়ে যাবে) */}
+       
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Plan Counter Badge */}
           <Link 

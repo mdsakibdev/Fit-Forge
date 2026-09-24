@@ -7,9 +7,7 @@ import { FaClock, FaFire, FaStar } from 'react-icons/fa6';
 export default function WorkoutCard({ fit }) {
   const router = useRouter();
 
-  const imageUrl = fit?.image && fit.image.trim() !== '' 
-    ? fit.image 
-    : 'https://via.placeholder.com/400x300?text=No+Image';
+  const imageUrl = fit?.image && fit.image.trim() !== '' ? fit.image : 'No Image';
 
   const handleCardClick = () => {
     if (fit?.id) {
@@ -41,7 +39,7 @@ export default function WorkoutCard({ fit }) {
             {fit?.muscleGroups?.map((muscle, idx) => (
               <span
                 key={idx}
-                className="bg-[#ccff00] text-black text-[10px] sm:text-xs font-black uppercase px-2.5 py-0.5 rounded-full"
+                className="bg-[#ccff00] text-black text-[10px] sm:text-xs font-bold uppercase  px-2.5 py-0.5 rounded-full"
               >
                 {muscle}
               </span>
@@ -50,7 +48,7 @@ export default function WorkoutCard({ fit }) {
 
           {/* Title & Equipment */}
           <div>
-            <h3 className="text-white font-extrabold text-lg sm:text-xl uppercase tracking-wide group-hover:text-[#ccff00] transition-colors">
+            <h3 className="text-white font-extrabold text-lg sm:text-xl uppercase tracking-wide mb-2 transition-colors">
               {fit?.name}
             </h3>
             <p className="text-zinc-400 text-xs mt-0.5 font-medium">

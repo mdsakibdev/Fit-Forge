@@ -50,9 +50,8 @@ const HeroBanner = () => {
         {/* Right Banner Image */}
         <div className="flex-1 w-full flex justify-center lg:justify-end z-10">
           <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-100 lg:h-87.5">
-            {/* Apnar banner image ekhane boshaten */}
             <Image
-              src={bannerImage} // public/images/hero-workout.png e image rakhtuben
+              src={bannerImage}
               alt="Workout Hero"
               fill
               priority
