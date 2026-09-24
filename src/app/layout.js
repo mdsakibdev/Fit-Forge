@@ -1,11 +1,11 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/navbar/Navbar";
-import { WorkoutProvider } from "../context/WorkoutContext";
+
 import { ToastContainer } from "react-toastify";
 import { Toaster } from "react-hot-toast";
-import Footer from "../components/footer/Footer";
-
+import { WorkoutProvider } from "@/context/WorkoutContext";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/Footer/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,10 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800', '900'], 
-  variable: '--font-montserrat', 
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-montserrat",
+  display: "swap",
 });
 
 export const metadata = {
@@ -38,25 +38,25 @@ export default function RootLayout({ children }) {
       <body
         className={`${montserrat.className} bg-black text-white min-h-screen antialiased`}
       >
-       {/* Toaster Component */}
-        <Toaster 
-          position="bottom-right" 
+        {/* Toaster Component */}
+        <Toaster
+          position="bottom-right"
           toastOptions={{
             style: {
-              background: '#121418',
-              color: '#fff',
-              border: '1px solid #27272a',
+              background: "#121418",
+              color: "#fff",
+              border: "1px solid #27272a",
             },
-          }}/>
+          }}
+        />
 
         <WorkoutProvider>
-         <Navbar/>
+          <Navbar />
           {children}
           <ToastContainer />
-          <Footer/>
+          <Footer />
         </WorkoutProvider>
-        
-        </body>
+      </body>
     </html>
   );
 }
