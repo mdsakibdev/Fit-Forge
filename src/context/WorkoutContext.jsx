@@ -1,7 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import toast from 'react-hot-toast'; // Import toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WorkoutContext = createContext();
 
